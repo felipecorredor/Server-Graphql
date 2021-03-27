@@ -1,10 +1,18 @@
+"Valida los tipos de nivel"
+enum Level {
+  principiante
+  intermedio
+  avanzado
+}
+
 type Course {
   _id: ID!
-  title: String!
+  title: String
   teacher: String
   description: String!
   topic: String
   people: [Student]
+  level: Level
 }
 
 type Student {
@@ -14,13 +22,9 @@ type Student {
 }
 
 type Query {
-  "Devuelve todos los cursos"
   getCourses: [Course]
-  "Devuelve un curso"
   getCourse(id: ID!): Course
-  "Devuelve todos los estudiantes"
   getStudents: [Student]
-  "Devuelve un estudiante"
   getStudent(id: ID!): Student
 }
 
@@ -29,21 +33,18 @@ input CourseInput {
   teacher: String
   description: String!
   topic: String
+  level: Level
 }
-
 
 input StudentInput {
   name: String!
   email: String!
 }
 
-
 type Mutation {
-  createCourse(input: CourseInput!): Course
-  editCourse(_id: ID!, input: CourseInput!): Course
-  deleteCourse(_id: ID!): Course
-  createStudent(input: StudentInput!): Student
-  editStudent(_id: ID!, input: StudentInput!): Course
-  deleteStudent(_id: ID!): Student
-  addPeople(courseID: ID!, personID: ID!): Course
+  createCourse(input: CourseInput!) : Course
+  createStudent(input: StudentInput!) : Student
+  deleteStudent(id:ID) : Student
+  updateStudent(id:ID, input: StudentInput!) : Student
+  addPeople(courseId:ID, personId: ID!) : Course
 }
