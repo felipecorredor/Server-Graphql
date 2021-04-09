@@ -1,50 +1,71 @@
 "Valida los tipos de nivel"
+
 enum Level {
   principiante
   intermedio
   avanzado
 }
 
+# union GlobalSearch = Course | Student | Monitor
+
 type Course {
   _id: ID!
   title: String
   teacher: String
-  description: String!
-  topic: String
+  description: String
+  topic: String @deprecated
   people: [Student]
   level: Level
 }
 
-type Student {
+interface Person {
   _id: ID!
   name: String!
   email: String!
+}
+
+type Student implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  avatar: String
+}
+
+type Monitor implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  phone: String
 }
 
 type Query {
   getCourses: [Course]
   getCourse(id: ID!): Course
-  getStudents: [Student]
-  getStudent(id: ID!): Student
+  getPeople: [Person]
+  getPerson(id: ID!): Person
 }
 
 input CourseInput {
-  title: String!
+  title: String
   teacher: String
-  description: String!
+  description: String
   topic: String
   level: Level
 }
 
-input StudentInput {
+input PersonInput {
   name: String!
   email: String!
+  phone: String
+  avatar: String
 }
 
 type Mutation {
   createCourse(input: CourseInput!) : Course
-  createStudent(input: StudentInput!) : Student
-  deleteStudent(id:ID) : Student
-  updateStudent(id:ID, input: StudentInput!) : Student
+  updateCourse(id: ID, input: CourseInput!) : Course
+  deleteCourse(id: ID) : Course
+  createPerson(input: PersonInput!) : Person
+  deleteStudent(id: ID) : Student
+  updatePerson(id: ID, input: PersonInput!) : Person
   addPeople(courseId:ID, personId: ID!) : Course
 }
